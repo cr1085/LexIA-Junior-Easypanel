@@ -1,0 +1,98 @@
+<!-- <!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexIA Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_styles.css') }}">
+
+</head>
+
+<body>
+    <nav>
+        <a href="{{ url_for('main.index') }}" class="logo">LexIA Agent</a>
+        <ul>
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('documents.upload_file') }}">Cargar Documentos</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+            {% else %}
+            <li><a href="{{ url_for('auth.login') }}">Iniciar Sesión</a></li>
+            <li><a href="{{ url_for('auth.register') }}">Registrarse</a></li>
+            {% endif %}
+
+           
+        </ul>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexIA Junior</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- CAMBIO AQUÍ: Añadimos el nuevo archivo de estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_styles.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('main.index') }}" class="logo">LexIA Junior</a>
+        <ul>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('documents.upload_file') }}">Cargar Documentos</a></li>
+                
+                <!-- CAMBIO AQUÍ: Añadimos el enlace condicional para el admin -->
+                {% if current_user.role == 'admin' %}
+                    <li><a href="{{ url_for('admin.dashboard') }}">Admin</a></li>
+                {% endif %}
+                
+                <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+            {% else %}
+                <li><a href="{{ url_for('auth.login') }}">Iniciar Sesión</a></li>
+                <li><a href="{{ url_for('auth.register') }}">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

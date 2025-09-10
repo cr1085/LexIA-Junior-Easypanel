@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h2>Manual de Usuario: LexIA Junior</h2>
+        </div>
+        <div class="card-body">
+            <h4 class="card-title">¿Qué es LexIA Junior?</h4>
+            <p class="card-text">
+                LexIA es un asistente de inteligencia artificial entrenado para ser un especialista en el "Archivo de Casos" que ha estudiado. Su propósito es ayudarte a encontrar información precisa y relevante dentro de su biblioteca de conocimiento de forma rápida y sencilla.
+            </p>
+            <hr>
+            <h4 class="card-title">¿Cómo conversar con el Asistente?</h4>
+            <ol>
+                <li>
+                    <strong>Sé Específico:</strong> El asistente funciona mejor cuando le haces preguntas directas. Si buscas información sobre un artículo en particular, ¡menciónalo!
+                    <ul>
+                        <li><em>Buen ejemplo:</em> "¿Qué dice el Artículo 22 de la Constitución sobre el derecho a la paz?"</li>
+                        <li><em>Ejemplo menos efectivo:</em> "Háblame de la paz."</li>
+                    </ul>
+                </li>
+                <br>
+                <li>
+                    <strong>Usa Conceptos Clave:</strong> Si no conoces el artículo, utiliza los términos legales exactos que buscarías en el documento.
+                    <ul>
+                        <li><em>Buen ejemplo:</em> "¿Cuáles son los requisitos para la acción de tutela?"</li>
+                        <li><em>Ejemplo menos efectivo:</em> "¿Cómo puedo quejarme de algo?"</li>
+                    </ul>
+                </li>
+            </ol>
+            <hr>
+            <h4 class="card-title">Entendiendo las Respuestas</h4>
+            <p>Cada respuesta de LexIA está diseñada para ser confiable:</p>
+            <ul>
+                <li><strong>La Respuesta:</strong> Es la información generada por la IA, basada estrictamente en los documentos que ha estudiado.</li>
+                <li><strong>Las Fuentes Consultadas:</strong> Debajo de la respuesta, verás el nombre del archivo `.pdf` que el asistente consultó. Esto te permite verificar la información y saber de dónde proviene.</li>
+            </ul>
+            <hr>
+            <div class="alert alert-warning" role="alert">
+                <strong>Limitación Importante:</strong> LexIA Junior es una herramienta de apoyo y orientación. Su conocimiento está <strong>limitado exclusivamente</strong> a los documentos que se cargaron en su biblioteca. No sustituye el juicio, la interpretación ni la consulta con un abogado profesional para un caso específico.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

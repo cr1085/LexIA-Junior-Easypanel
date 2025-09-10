@@ -1,0 +1,36 @@
+venv/
+.venv/
+
+
+pycache/
+*.pyc
+
+
+instance/
+
+
+.env
+
+
+.vscode/
+.idea/
+
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+
+# Archivo de variables de entorno (¡MUY IMPORTANTE!)
+.env
+
+# Carpeta de instancia de Flask (contiene la base de datos)
+instance/
+*.db
+*.sqlite3
+
+# Base de conocimiento generada (se debe generar localmente)
+faiss_index_maestra/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db

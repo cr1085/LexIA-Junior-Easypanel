@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <h1 class="admin-title">Panel de Administración de LexIA Agent</h1>
+    
+    <!-- Sección de Estadísticas -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h2 class="stat-number">{{ stats.total_users }}</h2>
+            <p class="stat-label">Usuarios Registrados</p>
+        </div>
+        <div class="stat-card">
+            <h2 class="stat-number">{{ stats.total_queries }}</h2>
+            <p class="stat-label">Consultas Realizadas</p>
+        </div>
+        <div class="stat-card">
+            <!-- Aquí podrías añadir más estadísticas, como documentos subidos -->
+            <h2 class="stat-number">N/A</h2>
+            <p class="stat-label">Documentos Indexados</p>
+        </div>
+    </div>
+
+    <!-- Sección de Actividad Reciente -->
+    <div class="activity-section">
+        <h2 class="section-title">Actividad Reciente</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Consulta Realizada</th>
+                        <th>Fecha y Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for query in recent_queries %}
+                    <tr>
+                        <td>{{ query.username }}</td>
+                        <td>{{ query.question }}</td>
+                        <td>{{ query.timestamp }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No hay actividad reciente.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexIA Junior</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_styles.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('main.index') }}" class="logo">LexIA Junior</a>
+        <ul>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('main.manual') }}">Manual de Usuario</a></li>
+                <li><a href="{{ url_for('documents.upload_file') }}">Cargar Documentos</a></li>
+                
+                <!-- Enlace condicional para el panel de administración -->
+                {% if current_user.role == 'admin' %}
+                    <li><a href="{{ url_for('admin.dashboard') }}">Admin</a></li>
+                {% endif %}
+
+                <li><a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+            {% else %}
+                <li><a href="{{ url_for('auth.login') }}">Iniciar Sesión</a></li>
+                <li><a href="{{ url_for('auth.register') }}">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="container">
+        <!-- Bloque para mostrar mensajes flash (alertas) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Bloque de contenido principal que será reemplazado por otras plantillas -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Scripts de JavaScript -->
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="junior-header">
+    <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 10V8C6 5.17157 6 3.75736 6.87868 2.87868C7.75736 2 9.17157 2 12 2C14.8284 2 16.2426 2 17.1213 2.87868C18 3.75736 18 5.17157 18 8V10" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M19 14V13C19 11.8954 19 11.3431 18.7071 10.8787C18.4142 10.4142 17.9372 10.1424 17 10.083" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5 14V13C5 11.8954 5 11.3431 5.29289 10.8787C5.58579 10.4142 6.06282 10.1424 7 10.083" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="3" y="10" width="18" height="12" rx="2" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+    <h2>Bienvenido, {{ current_user.username }}</h2>
+    <p>Estás conversando con **LexIA, tu Socio Jurídico Junior**.</p>
+</div>
+
+<div id="chat-container">
+    <div id="chat-box">
+        <div class="message ai-message">
+            <div class="avatar">
+                <svg class="lexia-avatar-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="#333" stroke-width="1.5" />
+                    <path
+                        d="M12 16C13.4353 16 15.1187 15.2025 16 14.5C16.8813 13.7975 17 13.3333 17 12C17 10 16 9.5 16 9.5C16 9.5 15.5 10.5 12 10.5C8.5 10.5 8 9.5 8 9.5C8 9.5 7 10 7 12C7 13.3333 7.11875 13.7975 8 14.5C8.88125 15.2025 10.5647 16 12 16Z"
+                        stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="message-content">
+                <p>Hola, soy LexIA. ¿En qué puedo ayudarte
+                    hoy?</p>
+            </div>
+        </div>
+    </div>
+    <div id="input-area">
+        <input type="text" id="user-input" placeholder="Escribe tu consulta aquí..." autofocus>
+        <button id="send-btn">Enviar</button>
+    </div>
+</div>
+{% endblock %}

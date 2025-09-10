@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>Bienvenido a LexIA Junior</h1>
+    <p>Tu asistente legal impulsado por inteligencia artificial.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn">Comienza Ahora</a>
+</div>
+{% endblock %}

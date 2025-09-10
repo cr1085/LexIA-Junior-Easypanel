@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- <div id="loading-overlay">
+    <div class="loading-box">
+        <div class="loader-title">Procesando Documento Legal</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+            
+        </div>
+        <div id="loading-status" class="loading-status-text">Iniciando conexión segura...</div>
+    </div>
+</div> -->
+
+<div id="loading-overlay">
+    <div class="loading-box">
+        <div class="loader-title">Procesando Documento Legal</div>
+        
+        <div class="progress-container">
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <div id="progress-percentage" class="progress-percentage">0%</div>
+        </div>
+
+        <div id="loading-status" class="loading-status-text">Iniciando conexión segura...</div>
+    </div>
+</div>
+
+<div class="form-container">
+    <h2>Cargar Documento para Análisis</h2>
+    <p>Sube un archivo PDF. El asistente podrá usar su contenido para responder preguntas.</p>
+    <form id="upload-form" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Selecciona un archivo PDF</label>
+            <input type="file" id="file" name="file" accept=".pdf" required>
+        </div>
+        <button type="submit" class="btn">Cargar y Procesar</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}

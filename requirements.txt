@@ -1,0 +1,13 @@
+Flask
+Flask-Login
+python-dotenv
+requests
+gunicorn
+PyMuPDF
+sentence-transformers
+faiss-cpu
+numpy
+langchain
+langchain-community
+sentence-transformers
+langchain-google-genai
