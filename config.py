@@ -1,3 +1,4 @@
+# =================================VERSION UNO=====================
 # import os
 # from dotenv import load_dotenv
 
@@ -31,21 +32,26 @@
 # print("-" * 30)
 # print(f"-> MODO DE IA CONFIGURADO: '{Config.AI_PROVIDER}'")
 # print("-" * 30)
-
+# ====================================VERSION ESTABLE================
 
 import os
 from dotenv import load_dotenv
 
 # La raíz del proyecto es el directorio donde se encuentra este archivo.
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
     
     # La base de datos estará en la carpeta 'instance' DENTRO de la raíz del proyecto.
     # Esta es la ruta correcta y robusta.
-    DATABASE_PATH = os.path.join(BASE_DIR, 'instance', 'legal_db.db')
+    # DATABASE_PATH = os.path.join(BASE_DIR, 'instance', 'legal_db.db')
     
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(BASE_DIR, 'instance', 'legal_db.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
     # Claves API
     GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
     
@@ -54,6 +60,5 @@ class Config:
 
 # Verificación que se imprime en la terminal al iniciar
 print("-" * 30)
-print(f"-> RUTA DE LA BASE DE DATOS: '{Config.DATABASE_PATH}'")
 print(f"-> MODO DE IA CONFIGURADO: '{Config.AI_PROVIDER}'")
 print("-" * 30)

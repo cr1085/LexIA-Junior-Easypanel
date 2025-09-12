@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from .models import User, check_password
+from .models import User
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -12,11 +12,9 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user_data = User.get_by_username(username)
-        
-        if user_data and check_password(user_data['password_hash'], password):
-            user_obj = User.get(user_data['id'])
-            login_user(user_obj)
+        user = User.get_by_username(username)
+        if user and user.check_password(password):
+            login_user(user)
             return redirect(url_for('main.dashboard'))
         else:
             flash('Usuario o contraseña incorrectos.', 'error')

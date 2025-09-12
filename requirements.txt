@@ -1,6 +1,7 @@
 Flask
 Flask-Login
 python-dotenv
+psycopg2-binary
 requests
 gunicorn
 PyMuPDF
@@ -11,3 +12,4 @@ langchain
 langchain-community
 sentence-transformers
 langchain-google-genai
+flask_sqlalchemy

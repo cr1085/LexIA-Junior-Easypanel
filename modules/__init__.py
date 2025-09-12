@@ -2,14 +2,17 @@ from flask import Flask
 from flask_login import LoginManager
 import os
 import click
-from .auth.models import User, init_db
+from .auth.models import User
 from config import Config
 from .assistant.rag_processor import RAGProcessor
+from .db import db # <-- Importa el objeto db
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
     
     app.config.from_object(Config)
+
+    db.init_app(app) # <-- Conecta la base de datos con tu app
     
     app.secret_key = app.config.get('SECRET_KEY', 'dev-key-shhh-this-is-secret')
     
@@ -21,7 +24,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.get(user_id)
+        return User.get_by_id(user_id)
 
     # Registrar Blueprints
     from .auth.routes import auth_bp
@@ -43,7 +46,7 @@ def create_app():
     
     @app.cli.command('init-db')
     def init_db_command():
-        init_db()
+        db.create_all()
         click.echo('Base de datos inicializada.')
 
     return app
