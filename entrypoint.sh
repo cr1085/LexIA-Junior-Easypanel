@@ -3,9 +3,9 @@ set -e
 
 echo "🚀 Iniciando despliegue de Lexia Junior..."
 
-# --- 1. Generar .env desde variables de build (si no existe) ---
+# --- 1. Generar .env desde variables de build ---
 if [ ! -f .env ]; then
-    echo "⚠️  Generando .env desde variables de entorno del build..."
+    echo "⚠️  Generando .env desde variables del build..."
     echo "AI_PROVIDER=${AI_PROVIDER:-google}" > .env
     echo "GOOGLE_API_KEY=${GOOGLE_API_KEY:-}" >> .env
     echo "SECRET_KEY=${SECRET_KEY:-secret-key-default}" >> .env
@@ -20,19 +20,22 @@ fi
 # Exportar variables para que Python y Flask las vean
 export $(grep -v '^#' .env | xargs)
 
-# --- 2. Crear carpeta 'instance' si no existe (necesaria para SQLite) ---
+# --- 2. Crear carpeta 'instance' si no existe ---
 mkdir -p instance
 
 # --- 3. Ejecutar indexación (indexer.py) ---
 echo "🔍 Ejecutando indexación de PDFs con indexer.py..."
+cd /app  # Aseguramos que estamos en el directorio correcto
 python indexer.py
 echo "✅ Indexación completada."
 
-# --- 4. Inicializar base de datos con flask init-db ---
+# --- 4. Inicializar base de datos ---
 echo "🗄️  Ejecutando 'flask init-db'..."
+cd /app
 flask init-db
 echo "✅ Base de datos inicializada."
 
-# --- 5. Iniciar Gunicorn (solo aquí, en producción) ---
+# --- 5. Iniciar Gunicorn ---
 echo "🚀 Iniciando servidor Gunicorn en http://0.0.0.0:$PORT..."
+cd /app
 exec gunicorn --bind 0.0.0.0:$PORT --workers 4 --timeout 120 app:app
