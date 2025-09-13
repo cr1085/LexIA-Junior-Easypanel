@@ -41,12 +41,7 @@ EXPOSE $PORT
 RUN echo "AI_PROVIDER=${AI_PROVIDER:-google}" > .env && \
     echo "GOOGLE_API_KEY=${GOOGLE_API_KEY:-}" >> .env && \
     echo "SECRET_KEY=${SECRET_KEY:-secret-key-default}" >> .env && \
-    echo "DISCORD_TOKEN=${DISCORD_TOKEN:-}" >> .env && \
-    echo "GROQ_API_KEY=${GROQ_API_KEY:-}" >> .env && \
-    echo "OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}" >> .env && \
-    echo "HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY:-}" >> .env && \
-    echo "DATABASE_URL=${DATABASE_URL:-postgresql://localhost}" >> .env && \
-    echo "GIT_SHA=${GIT_SHA:-unknown}" >> .env
+    echo "DATABASE_URL=${DATABASE_URL:-postgresql://localhost}" >> .env
 
 # Ejecutar la app con Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "4", "--timeout", "120", "app:app"]
