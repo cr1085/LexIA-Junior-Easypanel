@@ -1,26 +1,45 @@
-# Imagen base liviana con Python 3.11
 FROM python:3.11-slim
 
-# Crear directorio de la app
-WORKDIR /app
+# --- Declara todas las variables de build que EasyPanel envía ---
+ARG AI_PROVIDER
+ARG GOOGLE_API_KEY
+ARG SECRET_KEY
+ARG DISCORD_TOKEN
+ARG GROQ_API_KEY
+ARG OPENROUTER_API_KEY
+ARG HUGGINGFACE_API_KEY
+ARG DATABASE_URL
+ARG GIT_SHA
 
-# Instalar dependencias del sistema necesarias para psycopg2 y otras librerías
+# Instalar dependencias del sistema para compilar paquetes pesados
 RUN apt-get update && apt-get install -y \
     gcc \
+    g++ \
+    build-essential \
     libpq-dev \
+    libffi-dev \
+    libpoppler-cpp-dev \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar el archivo de dependencias primero (mejora caché en rebuilds)
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar solo requirements.txt primero para cachear mejor
 COPY requirements.txt .
 
-# Instalar dependencias de Python (incluye gunicorn ✅)
+# Instalar dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar el resto del código
+# Copiar todos los archivos del proyecto
 COPY . .
 
-# Exponer el puerto que usará gunicorn
-EXPOSE 8000
+# Hacer ejecutable el entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Comando por defecto para producción
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "app:app"]
+# Exponer puerto
+EXPOSE $PORT
+
+# Usar el entrypoint como comando principal (¡NO necesitas Start Command en EasyPanel!)
+ENTRYPOINT ["/entrypoint.sh"]
