@@ -1,47 +1,24 @@
-# Usa Python 3.11 con herramientas de compilación
 FROM python:3.11-slim
 
-# --- DECLARA TODOS LOS ARGUMENTOS QUE PASA EASY PANEL ---
-ARG AI_PROVIDER
-ARG GOOGLE_API_KEY
-ARG SECRET_KEY
-ARG DISCORD_TOKEN
-ARG GROQ_API_KEY
-ARG OPENROUTER_API_KEY
-ARG HUGGINGFACE_API_KEY
-ARG DATABASE_URL
-ARG GIT_SHA
-
-# Instalar dependencias del sistema necesarias para compilar paquetes
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    build-essential \
-    libpq-dev \
-    libffi-dev \
-    libpoppler-cpp-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Establecer directorio de trabajo
+# Crear carpeta de la app
 WORKDIR /app
 
-# Copiar requirements.txt primero para optimizar caché
+# Instalar dependencias del sistema (ej. psycopg2 necesita gcc y libpq)
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar dependencias primero para aprovechar caché
 COPY requirements.txt .
 
-# Instalar dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar todo el proyecto
+# Copiar el resto de la aplicación
 COPY . .
 
-# Exponer puerto (usará $PORT definido por EasyPanel)
-EXPOSE $PORT
+# Exponer el puerto
+EXPOSE 8000
 
-# Crear archivo .env dinámicamente con las variables de build (opcional, pero útil)
-RUN echo "AI_PROVIDER=${AI_PROVIDER:-google}" > .env && \
-    echo "GOOGLE_API_KEY=${GOOGLE_API_KEY:-}" >> .env && \
-    echo "SECRET_KEY=${SECRET_KEY:-secret-key-default}" >> .env && \
-    echo "DATABASE_URL=${DATABASE_URL:-postgresql://localhost}" >> .env
-
-# Ejecutar la app con Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:$PORT", "--workers", "4", "--timeout", "120", "app:app"]
+# Ejecutar con gunicorn
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "app:app"]
