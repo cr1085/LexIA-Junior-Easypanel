@@ -12,7 +12,6 @@ def init_db():
     c.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             role TEXT DEFAULT 'user',
@@ -54,9 +53,8 @@ def check_password(hashed_password, user_password):
     return stored_hash == sha256((user_password + salt).encode()).hexdigest()
 
 class User:
-    def __init__(self, id, username, email, role='user'):
+    def __init__(self, id, email, role='user'):
         self.id = id
-        self.username = username
         self.email = email
         self.role = role
         self.is_authenticated = True
@@ -74,30 +72,30 @@ class User:
         user = c.fetchone()
         conn.close()
         if user:
-            return {'id': user[0], 'username': user[1], 'email': user[2], 
-                   'password_hash': user[3], 'role': user[4]}
+            return {'id': user[0], 'email': user[1], 
+                   'password_hash': user[2], 'role': user[3]}
         return None
 
     @staticmethod
-    def get_by_username(username):
+    def get_by_email(email):
         conn = sqlite3.connect('instance/legal_db.db')
         c = conn.cursor()
-        c.execute('SELECT * FROM users WHERE username = ?', (username,))
+        c.execute('SELECT * FROM users WHERE email = ?', (email,))
         user = c.fetchone()
         conn.close()
         if user:
-            return {'id': user[0], 'username': user[1], 'email': user[2], 
-                   'password_hash': user[3], 'role': user[4]}
+            return {'id': user[0], 'email': user[1], 
+                   'password_hash': user[2], 'role': user[3]}
         return None
 
     @staticmethod
-    def create(username, email, password):
+    def create(email, password):
         try:
             conn = sqlite3.connect('instance/legal_db.db')
             c = conn.cursor()
             password_hash = hash_password(password)
-            c.execute('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
-                     (username, email, password_hash))
+            c.execute('INSERT INTO users (email, password_hash) VALUES (?, ?)',
+                     (email, password_hash))
             conn.commit()
             conn.close()
             return True

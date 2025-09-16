@@ -10,9 +10,11 @@ def login():
         return redirect(url_for('main.dashboard'))
 
     if request.method == 'POST':
-        username = request.form['username']
+        # username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
-        user = User.get_by_username(username)
+        # user = User.get_by_username(username)
+        user = User.get_by_email(email)
         if user and user.check_password(password):
             login_user(user)
             return redirect(url_for('main.dashboard'))
@@ -27,13 +29,13 @@ def register():
         return redirect(url_for('main.dashboard'))
 
     if request.method == 'POST':
-        username = request.form['username']
+        # username = request.form['username']
         email = request.form['email']
         password = request.form['password']
         
-        if User.get_by_username(username):
+        if User.get_by_email(email):
             flash('El nombre de usuario ya existe.', 'error')
-        elif User.create(username, email, password):
+        elif User.create(email, password):
             flash('¡Cuenta creada exitosamente! Por favor, inicia sesión.', 'success')
             return redirect(url_for('auth.login'))
         else:
