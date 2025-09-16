@@ -1,109 +1,3 @@
-# from flask import Blueprint, request, jsonify, current_app # <-- 1. IMPORTAR current_app
-# from flask_login import login_required
-# from .core import AIAssistant
-# # Quitamos la importación directa de RAGProcessor
-
-# assistant_bp = Blueprint('assistant', __name__)
-# ai_assistant = AIAssistant()
-# # rag_processor = RAGProcessor() # <-- 2. BORRAR ESTA LÍNEA
-
-# def get_db_connection():
-#     db_path = Config.DATABASE_PATH
-#     conn = sqlite3.connect(db_path)
-#     conn.row_factory = sqlite3.Row
-#     return conn
-
-# @assistant_bp.route('/ask', methods=['POST'])
-# @login_required
-# def ask():
-#     data = request.get_json()
-#     question = data.get('question')
-
-#     if not question:
-#         return jsonify({'error': 'No se proporcionó ninguna pregunta.'}), 400
-
-#     # 3. USAR EL PROCESADOR COMPARTIDO DESDE 'current_app'
-#     context = current_app.rag_processor.get_relevant_context(question)
-    
-#     print(f"DEBUG: Contexto encontrado para la pregunta:\n---\n{context}\n---")
-    
-#     if context:
-#         prompt = f"Basándote únicamente en el contexto: {context}, responde: {question}"        
-#     else:
-#         prompt = question
-
-#     response_text = ai_assistant.get_response(prompt)
-    
-#     return jsonify({'response': response_text})
-
-# ==================================================================
-
-# from flask import Blueprint, request, jsonify, current_app
-# from flask_login import login_required, current_user
-# import sqlite3
-# from config import Config
-# from datetime import datetime
-
-# assistant_bp = Blueprint('assistant', __name__)
-
-# # Necesitamos acceso a la clase del asistente para crear una instancia
-# from .core import AIAssistant
-# ai_assistant = AIAssistant()
-
-# def get_db_connection():
-#     conn = sqlite3.connect(Config.DATABASE_PATH)
-#     conn.row_factory = sqlite3.Row
-#     return conn
-
-# @assistant_bp.route('/ask', methods=['POST'])
-# @login_required
-# def ask():
-#     data = request.get_json()
-#     question = data.get('question')
-
-#     if not question:
-#         return jsonify({'error': 'No se proporcionó ninguna pregunta.'}), 400
-
-#     # --- INICIO DE LA LÓGICA INTELIGENTE ---
-#     # 1. Buscamos contexto en los documentos, como siempre.
-#     context = current_app.rag_processor.get_relevant_context(question)
-    
-#     print(f"DEBUG: Contexto encontrado para la pregunta:\n---\n{context}\n---")
-    
-#     if context:
-#         # 2. Si encontramos contexto, creamos el prompt estricto de RAG.
-#         prompt = f"""
-#         Basándote únicamente en el siguiente contexto extraído de documentos legales, responde la pregunta del usuario.
-#         Si la respuesta no está en el contexto, di "La información no se encuentra en los documentos que he procesado."
-
-#         ---
-#         Contexto:
-#         {context}
-#         ---
-
-#         Pregunta del usuario: {question}
-#         """
-#     else:
-#         # 3. Si NO hay contexto, es una pregunta general. Creamos un prompt conversacional.
-#         prompt = f"Eres un asistente amigable y profesional. Responde la siguiente pregunta de forma concisa: {question}"
-    
-#     # 4. Le pasamos el prompt adecuado al motor de IA.
-#     response_text = ai_assistant.get_response(prompt)
-#     # --- FIN DE LA LÓGICA INTELIGENTE ---
-    
-#     # Guardamos la consulta en el log
-#     try:
-#         conn = get_db_connection()
-#         conn.execute('INSERT INTO query_log (user_id, question) VALUES (?, ?)', (current_user.id, question))
-#         conn.commit()
-#         conn.close()
-#     except Exception as e:
-#         print(f"Error al registrar la consulta: {e}")
-
-#     return jsonify({'response': response_text})
-
-# ==================================================================
-
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 import os
@@ -179,6 +73,36 @@ def ask():
 
     if not question:
         return jsonify({'error': 'No se proporcionó ninguna pregunta.'}), 400
+    
+     # --- INICIO: CÓDIGO MEJORADO PARA MANEJAR SALUDOS ---
+    normalized_question = question.lower().strip()
+    greetings = ["hola", "buenos días", "buenas tardes", "buenas noches", "qué tal"]
+
+    # Revisamos si la pregunta COMIENZA con alguno de los saludos
+    is_greeting = False
+    for greeting in greetings:
+        if normalized_question.startswith(greeting):
+            is_greeting = True
+            break # Salimos del bucle en cuanto encontramos una coincidencia
+
+    if is_greeting:
+        # Ahora, creamos una respuesta personalizada y profesional
+        user_title = getattr(current_user, 'title', None) # Obtiene el título si existe, si no, None
+
+        if user_title:
+            # Si el usuario tiene un título (ej: "Doctora"), lo usamos
+            answer = f"Hola, {user_title}. Soy LexIA, tu socio jurídico. ¿En qué puedo ayudarte hoy?"
+        else:
+            # Si no hay título, usamos un saludo profesional genérico
+            answer = "Hola, es un placer asistirte. Soy LexIA, ¿cuál es tu consulta?"
+
+        return jsonify({
+            'answer': answer,
+            'sources': []
+        })
+    # --- FIN: CÓDIGO MEJORADO ---
+
+    # Si no es un saludo, el código continúa con la lógica RAG...
 
     # Si el índice no se cargó, devolvemos un error claro
     if not vector_store:
