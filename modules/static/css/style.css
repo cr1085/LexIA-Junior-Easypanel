@@ -376,3 +376,323 @@ nav a {
 .user-message {
     align-self: flex-end;
 }
+
+
+/* --- INICIO: ESTILOS MODERNOS PARA CHAT TIPO GEMINI --- */
+
+/* --- 1. Estructura Principal (Sidebar + Chat) --- */
+body {
+    background-color: #f0f4f9; /* Un fondo más suave y moderno */
+}
+
+.main-layout {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #1e1f22; /* Color oscuro para la barra lateral */
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-sizing: border-box;
+    transition: width 0.3s ease;
+}
+
+.chat-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff; /* Fondo blanco para el chat */
+}
+
+/* --- 2. Contenido de la Barra Lateral --- */
+.sidebar-header {
+    margin-bottom: 1.5rem;
+}
+
+.new-chat-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background-color: #35373b;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.new-chat-btn:hover {
+    background-color: #4a4c50;
+}
+
+.chat-history {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.history-title {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #a0a0a0;
+    margin-bottom: 0.5rem;
+    padding: 0 0.5rem;
+}
+
+.history-item {
+    display: block;
+    padding: 10px 15px;
+    color: #e0e0e0;
+    text-decoration: none;
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.95rem;
+}
+
+.history-item:hover {
+    background-color: #35373b;
+}
+
+.sidebar-footer {
+    border-top: 1px solid #35373b;
+    padding-top: 1rem;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #4a90e2; /* Un color de acento */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.user-email {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+
+/* --- 3. Rediseño del Área de Chat --- */
+
+/* Eliminamos el header anterior para un look más limpio */
+.junior-header {
+    display: none;
+}
+
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ocupa toda la altura del chat-area */
+    width: 100%;
+    max-width: 800px; /* Ancho máximo para la conversación */
+    margin: 0 auto; /* Centra el contenedor del chat */
+    box-shadow: none; /* Quitamos la sombra anterior */
+    border-radius: 0;
+}
+
+#chat-box {
+    padding: 20px 10px;
+    gap: 25px; /* Más espacio entre mensajes */
+}
+
+/* --- 4. Rediseño de Mensajes (Usuario y AI) --- */
+
+.message {
+    max-width: 90%; /* Un poco más de ancho para los mensajes */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* Estilos para el mensaje de la IA */
+.ai-message {
+    align-self: flex-start;
+}
+.ai-message .message-content {
+    background-color: #f0f4f9; /* Gris muy claro */
+    color: #1e1f22; /* Texto oscuro */
+    border-radius: 18px;
+    padding: 12px 18px;
+    border-bottom-left-radius: 4px;
+}
+
+/* Estilos para el mensaje del usuario */
+.user-message {
+    background-color: #1976d2; /* Un azul más profesional */
+    color: white;
+    border-radius: 18px;
+    padding: 12px 18px;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+/* Mantenemos el avatar pero con fondo transparente */
+.avatar {
+    background-color: transparent;
+    border: none;
+}
+
+
+/* --- 5. Rediseño del Área de Input --- */
+#input-area-wrapper {
+    padding: 1rem 0;
+    width: 100%;
+}
+
+#input-area {
+    display: flex;
+    align-items: center;
+    padding: 8px; /* Padding interno */
+    border: 1px solid #dcdfe6;
+    border-radius: 28px; /* Bordes más redondeados */
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Sombra sutil */
+    margin: 0 10px;
+}
+
+#user-input {
+    border: none;
+    margin-right: 0;
+    padding: 10px;
+    background-color: transparent;
+}
+
+#user-input:focus {
+    outline: none; /* Sin borde al hacer foco */
+}
+
+#send-btn {
+    background-color: #1976d2;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; /* Evita que el botón se encoja */
+    transition: background-color 0.2s ease;
+}
+#send-btn:hover {
+    background-color: #1565c0;
+}
+#send-btn svg {
+    color: white;
+    width: 20px;
+    height: 20px;
+}
+
+.disclaimer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #909399;
+    padding: 10px 0 0 0;
+}
+/* --- FIN: ESTILOS MODERNOS PARA CHAT TIPO GEMINI --- */
+
+
+/* --- INICIO: ESTILOS RESPONSIVOS MEJORADOS --- */
+
+/* Ocultar el botón de menú por defecto en pantallas grandes */
+.menu-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    /* 1. Barra lateral en móviles */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100%;
+        z-index: 1000;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        /* Pista de optimización para el navegador. Esto suele solucionar el bug de renderizado. */
+        will-change: transform;
+    }
+
+    /* 2. Clase para mostrar la barra lateral cuando esté activa */
+    .sidebar.is-open {
+        transform: translateX(0);
+        box-shadow: 5px 0px 15px rgba(0,0,0,0.2);
+    }
+
+    /* 3. El área del chat ocupa toda la pantalla */
+    .chat-area {
+        width: 100%;
+    }
+
+    /* 4. Estilos y posicionamiento del botón de menú */
+    .menu-toggle {
+        display: block; /* Hacemos visible el botón en móviles */
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        z-index: 999;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 5. Ajustes menores para el layout del chat */
+    #chat-container {
+        max-width: 100%;
+        padding-top: 60px; /* Dejamos espacio para el botón de menú */
+    }
+
+    #input-area-wrapper {
+        padding: 0.5rem;
+    }
+
+    #input-area {
+        margin: 0;
+    }
+}
+/* --- FIN: ESTILOS RESPONSIVOS MEJORADOS --- */
+
+
+
+/* --- ESTILOS PARA EL OVERLAY DEL MENÚ MÓVIL --- */
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Negro semitransparente */
+    z-index: 999; /* Justo debajo de la barra lateral */
+    opacity: 0;
+    visibility: hidden; /* Oculto por defecto */
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+/* Cuando la barra lateral está abierta, se muestra el overlay */
+.sidebar.is-open + .sidebar-overlay {
+    opacity: 1;
+    visibility: visible;
+}

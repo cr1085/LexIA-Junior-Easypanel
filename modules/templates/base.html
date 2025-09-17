@@ -43,8 +43,43 @@
         {% block content %}{% endblock %}
     </main>
 
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.querySelector('.sidebar-overlay'); // Seleccionamos el overlay
+
+        function closeSidebar() {
+            sidebar.classList.remove('is-open');
+        }
+
+        // Lógica para abrir/cerrar el menú con el botón
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('is-open');
+            });
+        }
+
+        // --- NUEVO: Cierra el menú si se hace clic en el overlay ---
+        if (overlay) {
+            overlay.addEventListener('click', closeSidebar);
+        }
+
+        // Cierra el menú si la ventana se agranda
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                if (sidebar.classList.contains('is-open')) {
+                    closeSidebar();
+                }
+            }
+        });
+    });
+</script>
     <!-- Scripts de JavaScript -->
     <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
     {% block scripts %}{% endblock %}
+
+
 </body>
 </html>
